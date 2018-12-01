@@ -16,12 +16,14 @@ public class Main {
     public static void main(String[] args) {
 	    ConnectFour game = new ConnectFour();
 
-	    while (true) {
-            displayBoard(game.board);
+	    while (game.isRunning()) {
+            displayBoard(game.getState());
             try {
                 int input = prompt(game.getActivePlayer());
-                game.dropADisk(input);
-                game.swapActivePlayer();
+                if (!game.checkExitRequest(input)) {
+                    game.dropADisk(input);
+                    game.swapActivePlayer();
+                }
             } catch(Error e) {
                 System.out.println(e.getMessage());
             } catch(InputMismatchException e) {

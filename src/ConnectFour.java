@@ -1,6 +1,7 @@
 public class ConnectFour {
-    public char[][] board = new char[ROWS][COLS];
+    private char[][] board = new char[ROWS][COLS];
     private char currentPlayer;
+    private boolean isRunning = true;
 
     private static final int ROWS = 6;
     private static final int COLS = 7;
@@ -14,6 +15,14 @@ public class ConnectFour {
         }
 
         currentPlayer = 'r';
+    }
+
+    public boolean checkExitRequest(int input) {
+        if (input == -1) {
+            this.isRunning = false;
+        }
+
+        return !this.isRunning;
     }
 
     public void dropADisk(int col) {
@@ -45,6 +54,10 @@ public class ConnectFour {
     public char getActivePlayer() {
         return this.currentPlayer;
     }
+
+    public boolean isRunning() { return this.isRunning; }
+
+    public char[][] getState() { return this.board; }
 
     private boolean isValidInputRange(int val) {
         return 0 <= val && val <= COLS - 1;
