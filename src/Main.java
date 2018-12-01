@@ -8,7 +8,7 @@ public class Main {
     private static final String YELLOW = "\u001B[33m";
 
     private static final Map<Character, String> cell = Map.ofEntries(
-            Map.entry('e', DEFAULT + "\u2610"),
+            Map.entry('e', DEFAULT + " "),
             Map.entry('r', RED + "\u25CF"),
             Map.entry('y', YELLOW + "\u25CF")
     );
@@ -31,18 +31,24 @@ public class Main {
     }
 
     private static void displayBoard(char[][] state) {
+        // print column numbers
+        System.out.print(" ");
         for (int i = 0; i < state[0].length; ++i) {
             System.out.print((i + 1) + " ");
         }
 
-        System.out.println();
-
+        // print each cell in the board
+        System.out.print("\n|");
         for (char[] row : state) {
             for (char cellState : row) {
-                System.out.print(cell.get(cellState) + " ");
+                System.out.print(cell.get(cellState) + DEFAULT + "|");
             }
 
-            System.out.println(DEFAULT);
+            if (row != state[state.length - 1]) {
+                System.out.print("\n|");
+            } else {
+                System.out.println();
+            }
         }
     }
 
