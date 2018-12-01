@@ -9,8 +9,8 @@ public class Main {
 
     private static final Map<Character, String> cell = Map.ofEntries(
             Map.entry('e', DEFAULT + " "),
-            Map.entry('r', RED + "\u25CF"),
-            Map.entry('y', YELLOW + "\u25CF")
+            Map.entry('r', RED + "\u25CF" + DEFAULT),
+            Map.entry('y', YELLOW + "\u25CF" + DEFAULT)
     );
 
     public static void main(String[] args) {
@@ -18,11 +18,19 @@ public class Main {
 
 	    while (game.isRunning()) {
             displayBoard(game.getState());
+
             try {
                 int input = prompt(game.getActivePlayer());
-                if (!game.checkExitRequest(input)) {
-                    game.dropADisk(input);
-                    game.swapActivePlayer();
+                game.processInput(input);
+
+                if (game.isWon()) {
+                    System.out.println(cell.get(game.getWinner()) + DEFAULT + " wins!");
+                    displayBoard(game.getState());
+                    playAgainPrompt(game);
+                } else if (game.isDraw()) {
+                    System.out.println("The game is a draw!");
+                    displayBoard(game.getState());
+                    playAgainPrompt(game);
                 }
             } catch(Error e) {
                 System.out.println(e.getMessage());
@@ -59,5 +67,18 @@ public class Main {
 
         System.out.print(cell.get(player) + ": " + DEFAULT);
         return scanner.nextInt();
+    }
+
+    private static void playAgainPrompt(ConnectFour game) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Play again? [y/N]: ");
+        String input = scanner.nextLine().trim();
+
+        if (input.equals("y") || input.equals("Y")) {
+            game.reset();
+        } else {
+            game.processInput(-1);
+        }
     }
 }
