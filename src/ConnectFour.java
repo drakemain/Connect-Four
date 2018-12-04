@@ -110,6 +110,8 @@ public class ConnectFour {
         int row = ROWS - 1;
         char player;
 
+        // find the top occupied (and therefore the last to
+        // be occupied) row in the given column
         while (row > 0 && this.board[row - 1][colIndex] != 'e') {
             --row;
         }
@@ -122,15 +124,15 @@ public class ConnectFour {
         
         if (this.checkHorizontal(row, colIndex) >= 4) {
             this.winner = player;
+        } else if (this.checkVertical(row, colIndex) >= 4) {
+            this.winner = player;
         }
 
         // TODO:
-        // check diagonal
-        // check vert l->r
-        // check vert r->l
+        // check diag l->r
+        // check diag r->l
     }
 
-    // TODO: Does not correctly check first column
     private int checkHorizontal(int row, int col) {
         char player = this.board[row][col];
         
@@ -140,7 +142,7 @@ public class ConnectFour {
         
         // count the cells the player occupies to the left of the
         // starting position within the bounds of the board
-        while (checkCol > 0 && this.board[row][checkCol] == player) {
+        while (checkCol >= 0 && this.board[row][checkCol] == player) {
             --checkCol;
             ++counter;
         }
@@ -154,6 +156,22 @@ public class ConnectFour {
         }
 
         return counter;
+    }
+
+    // Expects input to be the top occupied row
+    // and therefore only needs to check lower cells
+    private int checkVertical(int row, int col) {
+        int result = 0;
+        char player = this.board[row][col];
+
+        if (player != 'e') {
+            while (row < ROWS && this.board[row][col] == player) {
+                ++result;
+                ++row;
+            }
+        }
+
+        return result;
     }
 
     private boolean isValidInputRange(int val) {
