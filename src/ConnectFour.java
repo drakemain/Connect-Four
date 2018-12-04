@@ -126,12 +126,10 @@ public class ConnectFour {
                 this.checkHorizontal(row, colIndex) >= 4
                 || this.checkVertical(row, colIndex) >= 4
                 || this.checkDiagLTR(row, colIndex) >= 4
+                || this.checkDiagRTL(row, colIndex) >= 4
         ) {
             this.winner = player;
         }
-
-        // TODO:
-        // check diag r->l
     }
 
     private int checkHorizontal(int row, int col) {
@@ -201,6 +199,38 @@ public class ConnectFour {
         ) {
             ++result;
             ++checkCol;
+            ++checkRow;
+        }
+
+        return result;
+    }
+
+    private int checkDiagRTL(int row, int col) {
+        int result = 1;
+        char player = this.board[row][col];
+        int checkCol = col + 1;
+        int checkRow = row - 1;
+
+        while(
+                checkRow >= 0
+                && checkCol < COLS
+                && this.board[checkRow][checkCol] == player
+        ) {
+            ++result;
+            ++checkCol;
+            --checkRow;
+        }
+
+        checkCol = col - 1;
+        checkRow = row + 1;
+
+        while(
+                checkRow < ROWS
+                && checkCol >= 0
+                && this.board[checkRow][checkCol] == player
+        ) {
+            ++result;
+            --checkCol;
             ++checkRow;
         }
 
